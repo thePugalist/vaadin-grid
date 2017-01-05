@@ -1,0 +1,73 @@
+<script>
+  window.vaadin = window.vaadin || {};
+  vaadin.elements = vaadin.elements || {};
+  vaadin.elements.grid = vaadin.elements.grid || {};
+
+  /**
+   * @polymerBehavior vaadin.elements.grid.FocusableCellContainerBehavior
+   */
+  vaadin.elements.grid.FocusableCellContainerBehavior = {
+    properties: {
+      focusableRows: Array,
+
+      _focusedRow: Number,
+      _focusedCell: Number,
+    },
+
+    observers: ['_focusableRowsChanged(focusableRows)',
+      '_focusedCellChanged(focusableRows, _focusedRow, _focusedCell)'],
+
+    _focusableRowsChanged: function(rows) {
+      this.focusCell(rows[0].children[0]);
+      // this._focusedCellChanged(rows, this._focusedRow, this._focusedCell);
+      // console.log(this, rows);
+    },
+
+    focusCell: function(focusedCell) {
+      this.focusableRows.forEach(function(row, i) {
+        row.cells.forEach(function(cell, j) {
+          if (focusedCell === cell) {
+            this._focusedCell = j;
+            this._focusedRow = i;
+            return;
+          }
+        }.bind(this));
+      }.bind(this));
+    },
+
+    _focusedCellChanged: function(rows, rowIndex, cellIndex) {
+      var rowEl = rows[rowIndex];
+      if (cellIndex > rowEl.children.length) {
+        this._focusedCell = rowEl.children.length - 1;
+        return;
+      }
+
+      rows.forEach(function(row, i) {
+        row.focused = i === rowIndex;
+        row.cells.forEach(function(cell, j) {
+          this.toggleAttribute('focused', i === rowIndex && j === cellIndex, cell);
+        }.bind(this));
+      }.bind(this));
+    },
+
+    focusLeft: function() {
+      this._focusedCell = Math.max(0, this._focusedCell - 1);
+    },
+
+    focusDown: function() {
+      if (this.focusableRows) {
+        this._focusedRow = Math.min(this._focusedRow + 1, this.focusableRows.length - 1);
+      }
+    },
+
+    focusRight: function() {
+      if (this.focusableRows) {
+        this._focusedCell = Math.min(this._focusedCell + 1, this.focusableRows[this._focusedRow].children.length - 1);
+      }
+    },
+
+    focusUp: function() {
+      this._focusedRow = Math.max(0, this._focusedRow - 1);
+    }
+  };
+</script>

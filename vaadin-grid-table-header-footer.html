@@ -1,3 +1,5 @@
+<link rel="import" href="vaadin-grid-focusable-cell-container-behavior.html">
+
 <script>
   (function() {
 
@@ -31,13 +33,16 @@
         rows.forEach(function(row) {
           Polymer.dom(this).appendChild(row);
         }.bind(this));
+
+        this.focusableRows = rows;
       }
     };
 
     Polymer({
       is: 'vaadin-grid-table-header',
       extends: 'thead',
-      behaviors: [vaadinGridTableRowContainerBehavior],
+      behaviors: [vaadinGridTableRowContainerBehavior,
+        vaadin.elements.grid.FocusableCellContainerBehavior],
 
       _createRow: function() {
         return document.createElement('tr', 'vaadin-grid-table-header-row');
@@ -45,9 +50,16 @@
     });
 
     Polymer({
+      is: 'vaadin-grid-table-body',
+      extends: 'tbody',
+      behaviors: [vaadin.elements.grid.FocusableCellContainerBehavior]
+    });
+
+    Polymer({
       is: 'vaadin-grid-table-footer',
       extends: 'tfoot',
-      behaviors: [vaadinGridTableRowContainerBehavior],
+      behaviors: [vaadinGridTableRowContainerBehavior,
+        vaadin.elements.grid.FocusableCellContainerBehavior],
 
       _createRow: function() {
         return document.createElement('tr', 'vaadin-grid-table-footer-row');

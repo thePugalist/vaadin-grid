@@ -132,10 +132,15 @@
             </vaadin-grid-selection-column>
 
             <vaadin-grid-column width="100px" flex="0">
+              <template class="footer">
+                <input type="text">
+              </template>
+
               <template class="header">
                 <div class="cell">Name</div>
               </template>
               <template>
+                <input>
                 <div class="cell">[[item.user.name.first]]</div>
               </template>
             </vaadin-grid-column>
@@ -304,7 +309,6 @@
           <x-data-source data-source="{{dataSource}}" loading="{{_loading}}" delay="1000"></x-data-source>
 
           <vaadin-grid id="valo-grid" data-source="[[dataSource]]" size="2000" loading$="[[_loading]]">
-
             <vaadin-grid-column-group frozen>
               <template class="header"></template>
 

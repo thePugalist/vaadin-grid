@@ -202,7 +202,8 @@
       },
 
       behaviors: [
-        vaadinGridTableCellBehavior
+        vaadinGridTableCellBehavior,
+        vaadin.elements.grid.CellClickBehavior
       ],
 
       observers: ['_headerTemplateChanged(headerTemplate, isAttached)'],
@@ -234,7 +235,8 @@
       },
 
       behaviors: [
-        vaadinGridTableCellBehavior
+        vaadinGridTableCellBehavior,
+        vaadin.elements.grid.CellClickBehavior
       ],
 
       observers: ['_footerTemplateChanged(footerTemplate, isAttached)'],

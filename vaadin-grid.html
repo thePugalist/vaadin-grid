@@ -86,6 +86,10 @@ Custom property | Description | Default
       -webkit-tap-highlight-color: transparent;
     }
 
+    :host(:focus) {
+      outline: none;
+    }
+
     #scroller {
       height: 100%;
       width: 100%;
@@ -93,11 +97,15 @@ Custom property | Description | Default
 
   </style>
   <template>
+    <div id="headerFocusTrap" tabindex="0" on-focus="_onHeaderFocus"></div>
+
     <vaadin-grid-table id="scroller" loading$=[[_loading]] bind-data="[[_bindData]]" size="[[size]]"
         column-tree="[[_columnTree]]" content-target="[[_getContentTarget()]]"
         row-details-template="[[_rowDetailsTemplate]]">
       <content></content>
     </vaadin-grid-table>
+
+    <div id="footerFocusTrap" tabindex="0" on-focus="_onFooterFocus"></div>
   </template>
 </dom-module>
 
@@ -129,6 +137,7 @@ Custom property | Description | Default
     },
 
     behaviors: [
+      Polymer.IronA11yKeysBehavior,
       vaadin.elements.grid.ActiveItemBehavior,
       vaadin.elements.grid.RowDetailsBehavior,
       vaadin.elements.grid.DataSourceBehavior,
@@ -149,6 +158,7 @@ Custom property | Description | Default
       row.selected = this._isSelected(item);
       row.expanded = this._isExpanded(item);
       row.toggleAttribute('active', item !== null && item == this.activeItem);
+      row.focused = row.index === this.$.scroller.$.items._focusedRow;
     },
 
     _getContentTarget: function() {

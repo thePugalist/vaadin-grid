@@ -205,7 +205,7 @@
 
     <style include="vaadin-grid-table-themability-styles"></style>
     <style include="vaadin-grid-selection-themability-styles"></style>
-    <style include="vaadin-grid-active-item-themability-styles"></style>
+    <style include="vaadin-grid-active-focused-item-themability-styles"></style>
     <style include="vaadin-grid-data-source-themability-styles"></style>
     <style include="vaadin-grid-row-details-themability-styles"></style>
 
@@ -218,9 +218,11 @@
         </div>
       </caption>
       <thead id="header" is="vaadin-grid-table-header" column-tree="[[columnTree]]"></thead>
-      <tbody id="items"></tbody>
+      <tbody id="items" is="vaadin-grid-table-body"></tbody>
       <tfoot id="footer" is="vaadin-grid-table-footer" column-tree="[[columnTree]]"></tfoot>
     </table>
+
+    <!-- <div id="focusTrap" tabindex="0"></div> -->
 
     <vaadin-grid-table-outer-scroller
         id="outerscroller"
@@ -344,6 +346,10 @@
       physicalItems.forEach(function(row) {
         row.columns = columnTree[columnTree.length - 1];
       });
+
+      this.$.items.focusableRows = physicalItems.slice(0);
+      // this.$.items.focusableRows = physicalItems;
+      // console.log(this, physicalItems.length, physicalItems === this.$.items.focusableRows);
 
       Polymer.RenderStatus.afterNextRender(this.$.header, function() {
         var headerHeight = this.$.header.clientHeight + 'px';
